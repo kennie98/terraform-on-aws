@@ -11,6 +11,7 @@
 # terraform destroy -target aws_instance.web-server-instance
 
 # $ terraform state list
+```
 aws_eip.one
 aws_instance.web-server-instance
 aws_internet_gateway.gw
@@ -20,8 +21,10 @@ aws_route_table_association.a
 aws_security_group.allow_web
 aws_subnet.subnet-1
 aws_vpc.prod-vpc
+```
 
 # $ terraform state show aws_instance.web-server-instance
+```
 # aws_instance.web-server-instance:
 resource "aws_instance" "web-server-instance" {
     ami                          = "ami-02aa7f3de34db391a"
@@ -90,17 +93,20 @@ resource "aws_instance" "web-server-instance" {
         volume_type           = "gp2"
     }
 }
+```
 
 # `terraform output` printout all the outputs
+```
 $ terraform output
 server_info = [
   "ip-10-0-1-50.us-east-2.compute.internal",
   "subnet-0a3b8c48f70b1eb2c",
 ]
 server_public_ip = "3.141.188.212"
-
+```
 # using a variable without default value will trigger prompt to input:
 $ terraform apply --auto-approve
+```
 var.available_zone
   AWS zone to pin up the resources
 
@@ -161,5 +167,324 @@ server_info = [
   "subnet-0b2ee50019518aec9",
 ]
 server_public_ip = "3.140.163.30"
-
+```
 # another option is to define the variable in `terraform.tfvars` which is the default place for variable configuration.
+
+# passing variable definition file
+$ terraform destroy -var-file credential.tfvars
+```
+An execution plan has been generated and is shown below.
+Resource actions are indicated with the following symbols:
+  - destroy
+
+Terraform will perform the following actions:
+
+  # aws_eip.one will be destroyed
+  - resource "aws_eip" "one" {
+      - associate_with_private_ip = "10.0.1.50" -> null
+      - association_id            = "eipassoc-09f6bdce2764f8a58" -> null
+      - domain                    = "vpc" -> null
+      - id                        = "eipalloc-0ea7b996239a1a855" -> null
+      - instance                  = "i-00c72dc123564f371" -> null
+      - network_border_group      = "us-east-2" -> null
+      - network_interface         = "eni-08a1d304d53dab607" -> null
+      - private_dns               = "ip-10-0-1-50.us-east-2.compute.internal" -> null
+      - private_ip                = "10.0.1.50" -> null
+      - public_dns                = "ec2-3-23-245-115.us-east-2.compute.amazonaws.com" -> null
+      - public_ip                 = "3.23.245.115" -> null
+      - public_ipv4_pool          = "amazon" -> null
+      - tags                      = {} -> null
+      - vpc                       = true -> null
+    }
+
+  # aws_instance.web-server-instance will be destroyed
+  - resource "aws_instance" "web-server-instance" {
+      - ami                          = "ami-02aa7f3de34db391a" -> null
+      - arn                          = "arn:aws:ec2:us-east-2:818472496193:instance/i-00c72dc123564f371" -> null
+      - associate_public_ip_address  = false -> null
+      - availability_zone            = "us-east-2a" -> null
+      - cpu_core_count               = 1 -> null
+      - cpu_threads_per_core         = 1 -> null
+      - disable_api_termination      = false -> null
+      - ebs_optimized                = false -> null
+      - get_password_data            = false -> null
+      - hibernation                  = false -> null
+      - id                           = "i-00c72dc123564f371" -> null
+      - instance_state               = "running" -> null
+      - instance_type                = "t2.micro" -> null
+      - ipv6_address_count           = 0 -> null
+      - ipv6_addresses               = [] -> null
+      - key_name                     = "terraform-main-key" -> null
+      - monitoring                   = false -> null
+      - primary_network_interface_id = "eni-08a1d304d53dab607" -> null
+      - private_dns                  = "ip-10-0-1-50.us-east-2.compute.internal" -> null
+      - private_ip                   = "10.0.1.50" -> null
+      - secondary_private_ips        = [] -> null
+      - security_groups              = [] -> null
+      - source_dest_check            = true -> null
+      - subnet_id                    = "subnet-0df6415eba8051111" -> null
+      - tags                         = {
+          - "Name" = "terraform-prod"
+        } -> null
+      - tenancy                      = "default" -> null
+      - user_data                    = "b1012ca44c304a108cf032bccc08286b0ccced2b" -> null
+      - vpc_security_group_ids       = [
+          - "sg-0724c2a148596c59c",
+        ] -> null
+
+      - credit_specification {
+          - cpu_credits = "standard" -> null
+        }
+
+      - enclave_options {
+          - enabled = false -> null
+        }
+
+      - metadata_options {
+          - http_endpoint               = "enabled" -> null
+          - http_put_response_hop_limit = 1 -> null
+          - http_tokens                 = "optional" -> null
+        }
+
+      - network_interface {
+          - delete_on_termination = false -> null
+          - device_index          = 0 -> null
+          - network_interface_id  = "eni-08a1d304d53dab607" -> null
+        }
+
+      - root_block_device {
+          - delete_on_termination = true -> null
+          - device_name           = "/dev/sda1" -> null
+          - encrypted             = false -> null
+          - iops                  = 100 -> null
+          - tags                  = {} -> null
+          - throughput            = 0 -> null
+          - volume_id             = "vol-0154502ba6974e116" -> null
+          - volume_size           = 8 -> null
+          - volume_type           = "gp2" -> null
+        }
+    }
+
+  # aws_internet_gateway.gw will be destroyed
+  - resource "aws_internet_gateway" "gw" {
+      - arn      = "arn:aws:ec2:us-east-2:818472496193:internet-gateway/igw-039fb3f5561bba8af" -> null
+      - id       = "igw-039fb3f5561bba8af" -> null
+      - owner_id = "818472496193" -> null
+      - tags     = {} -> null
+      - vpc_id   = "vpc-04b5635b546d50c65" -> null
+    }
+
+  # aws_network_interface.web-server-nic will be destroyed
+  - resource "aws_network_interface" "web-server-nic" {
+      - id                 = "eni-08a1d304d53dab607" -> null
+      - ipv6_address_count = 0 -> null
+      - ipv6_addresses     = [] -> null
+      - mac_address        = "02:d8:e4:38:d8:7c" -> null
+      - private_ip         = "10.0.1.50" -> null
+      - private_ips        = [
+          - "10.0.1.50",
+        ] -> null
+      - private_ips_count  = 0 -> null
+      - security_groups    = [
+          - "sg-0724c2a148596c59c",
+        ] -> null
+      - source_dest_check  = true -> null
+      - subnet_id          = "subnet-0df6415eba8051111" -> null
+      - tags               = {} -> null
+
+      - attachment {
+          - attachment_id = "eni-attach-0a02d9401393c44da" -> null
+          - device_index  = 0 -> null
+          - instance      = "i-00c72dc123564f371" -> null
+        }
+    }
+
+  # aws_route_table.prod-route-table will be destroyed
+  - resource "aws_route_table" "prod-route-table" {
+      - id               = "rtb-09690b471c3386e25" -> null
+      - owner_id         = "818472496193" -> null
+      - propagating_vgws = [] -> null
+      - route            = [
+          - {
+              - cidr_block                = ""
+              - egress_only_gateway_id    = ""
+              - gateway_id                = "igw-039fb3f5561bba8af"
+              - instance_id               = ""
+              - ipv6_cidr_block           = "::/0"
+              - local_gateway_id          = ""
+              - nat_gateway_id            = ""
+              - network_interface_id      = ""
+              - transit_gateway_id        = ""
+              - vpc_endpoint_id           = ""
+              - vpc_peering_connection_id = ""
+            },
+          - {
+              - cidr_block                = "0.0.0.0/0"
+              - egress_only_gateway_id    = ""
+              - gateway_id                = "igw-039fb3f5561bba8af"
+              - instance_id               = ""
+              - ipv6_cidr_block           = ""
+              - local_gateway_id          = ""
+              - nat_gateway_id            = ""
+              - network_interface_id      = ""
+              - transit_gateway_id        = ""
+              - vpc_endpoint_id           = ""
+              - vpc_peering_connection_id = ""
+            },
+        ] -> null
+      - tags             = {
+          - "Name" = "terraform-prod"
+        } -> null
+      - vpc_id           = "vpc-04b5635b546d50c65" -> null
+    }
+
+  # aws_route_table_association.a will be destroyed
+  - resource "aws_route_table_association" "a" {
+      - id             = "rtbassoc-06f7952cfef1a085e" -> null
+      - route_table_id = "rtb-09690b471c3386e25" -> null
+      - subnet_id      = "subnet-0df6415eba8051111" -> null
+    }
+
+  # aws_security_group.allow_web will be destroyed
+  - resource "aws_security_group" "allow_web" {
+      - arn                    = "arn:aws:ec2:us-east-2:818472496193:security-group/sg-0724c2a148596c59c" -> null
+      - description            = "Allow Web inbound traffic" -> null
+      - egress                 = [
+          - {
+              - cidr_blocks      = [
+                  - "0.0.0.0/0",
+                ]
+              - description      = ""
+              - from_port        = 0
+              - ipv6_cidr_blocks = []
+              - prefix_list_ids  = []
+              - protocol         = "-1"
+              - security_groups  = []
+              - self             = false
+              - to_port          = 0
+            },
+        ] -> null
+      - id                     = "sg-0724c2a148596c59c" -> null
+      - ingress                = [
+          - {
+              - cidr_blocks      = [
+                  - "0.0.0.0/0",
+                ]
+              - description      = "HTTP"
+              - from_port        = 80
+              - ipv6_cidr_blocks = []
+              - prefix_list_ids  = []
+              - protocol         = "tcp"
+              - security_groups  = []
+              - self             = false
+              - to_port          = 80
+            },
+          - {
+              - cidr_blocks      = [
+                  - "0.0.0.0/0",
+                ]
+              - description      = "HTTPS"
+              - from_port        = 443
+              - ipv6_cidr_blocks = []
+              - prefix_list_ids  = []
+              - protocol         = "tcp"
+              - security_groups  = []
+              - self             = false
+              - to_port          = 443
+            },
+          - {
+              - cidr_blocks      = [
+                  - "0.0.0.0/0",
+                ]
+              - description      = "SSH"
+              - from_port        = 22
+              - ipv6_cidr_blocks = []
+              - prefix_list_ids  = []
+              - protocol         = "tcp"
+              - security_groups  = []
+              - self             = false
+              - to_port          = 22
+            },
+        ] -> null
+      - name                   = "allow_web_traffic" -> null
+      - owner_id               = "818472496193" -> null
+      - revoke_rules_on_delete = false -> null
+      - tags                   = {
+          - "Name" = "allow_web"
+        } -> null
+      - vpc_id                 = "vpc-04b5635b546d50c65" -> null
+    }
+
+  # aws_subnet.subnet-1 will be destroyed
+  - resource "aws_subnet" "subnet-1" {
+      - arn                             = "arn:aws:ec2:us-east-2:818472496193:subnet/subnet-0df6415eba8051111" -> null
+      - assign_ipv6_address_on_creation = false -> null
+      - availability_zone               = "us-east-2a" -> null
+      - availability_zone_id            = "use2-az1" -> null
+      - cidr_block                      = "10.0.1.0/24" -> null
+      - id                              = "subnet-0df6415eba8051111" -> null
+      - map_customer_owned_ip_on_launch = false -> null
+      - map_public_ip_on_launch         = false -> null
+      - owner_id                        = "818472496193" -> null
+      - tags                            = {
+          - "Name" = "terraform-prod"
+        } -> null
+      - vpc_id                          = "vpc-04b5635b546d50c65" -> null
+    }
+
+  # aws_vpc.prod-vpc will be destroyed
+  - resource "aws_vpc" "prod-vpc" {
+      - arn                              = "arn:aws:ec2:us-east-2:818472496193:vpc/vpc-04b5635b546d50c65" -> null
+      - assign_generated_ipv6_cidr_block = false -> null
+      - cidr_block                       = "10.0.0.0/16" -> null
+      - default_network_acl_id           = "acl-0bac7f032c4d9654b" -> null
+      - default_route_table_id           = "rtb-0705a0809e1615551" -> null
+      - default_security_group_id        = "sg-071163714343681f1" -> null
+      - dhcp_options_id                  = "dopt-255e894e" -> null
+      - enable_dns_hostnames             = false -> null
+      - enable_dns_support               = true -> null
+      - id                               = "vpc-04b5635b546d50c65" -> null
+      - instance_tenancy                 = "default" -> null
+      - main_route_table_id              = "rtb-0705a0809e1615551" -> null
+      - owner_id                         = "818472496193" -> null
+      - tags                             = {
+          - "Name" = "terraform-prod"
+        } -> null
+    }
+
+Plan: 0 to add, 0 to change, 9 to destroy.
+
+Changes to Outputs:
+
+Do you really want to destroy all resources?
+  Terraform will destroy all your managed infrastructure, as shown above.
+  There is no undo. Only 'yes' will be accepted to confirm.
+
+  Enter a value: yes
+
+aws_route_table_association.a: Destroying... [id=rtbassoc-06f7952cfef1a085e]
+aws_eip.one: Destroying... [id=eipalloc-0ea7b996239a1a855]
+aws_instance.web-server-instance: Destroying... [id=i-00c72dc123564f371]
+aws_route_table_association.a: Destruction complete after 0s
+aws_route_table.prod-route-table: Destroying... [id=rtb-09690b471c3386e25]
+aws_route_table.prod-route-table: Destruction complete after 1s
+aws_eip.one: Destruction complete after 1s
+aws_internet_gateway.gw: Destroying... [id=igw-039fb3f5561bba8af]
+aws_instance.web-server-instance: Still destroying... [id=i-00c72dc123564f371, 10s elapsed]
+aws_internet_gateway.gw: Still destroying... [id=igw-039fb3f5561bba8af, 11s elapsed]
+aws_internet_gateway.gw: Destruction complete after 11s
+aws_instance.web-server-instance: Still destroying... [id=i-00c72dc123564f371, 20s elapsed]
+aws_instance.web-server-instance: Still destroying... [id=i-00c72dc123564f371, 30s elapsed]
+aws_instance.web-server-instance: Still destroying... [id=i-00c72dc123564f371, 40s elapsed]
+aws_instance.web-server-instance: Destruction complete after 40s
+aws_network_interface.web-server-nic: Destroying... [id=eni-08a1d304d53dab607]
+aws_network_interface.web-server-nic: Destruction complete after 1s
+aws_subnet.subnet-1: Destroying... [id=subnet-0df6415eba8051111]
+aws_security_group.allow_web: Destroying... [id=sg-0724c2a148596c59c]
+aws_security_group.allow_web: Destruction complete after 1s
+aws_subnet.subnet-1: Destruction complete after 1s
+aws_vpc.prod-vpc: Destroying... [id=vpc-04b5635b546d50c65]
+aws_vpc.prod-vpc: Destruction complete after 0s
+
+Destroy complete! Resources: 9 destroyed.
+```
