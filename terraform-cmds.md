@@ -1,16 +1,20 @@
-# terraform init
-# terraform plan
-# terraform apply
-# terraform destroy
-# terraform refresh #shows the states/outputs without really applying changes
-
-# terraform apply --auto-approve # automatically apply without confirmation
-
+# Initialization (Installation of provider libraries):
+`terraform init`
+# Check results of script before applying changes
+`terraform plan`
+# Apply Changes
+`terraform apply`
+# Destroy all the infrastructure created by terraform scripts
+`terraform destroy`
+# shows the states/outputs without really applying changes
+`terraform refresh`
+# automatically apply without confirmation
+`terraform apply --auto-approve`
 # delete/apply only one resource
-# terraform apply -target aws_instance.web-server-instance
-# terraform destroy -target aws_instance.web-server-instance
-
-# $ terraform state list
+`terraform apply -target aws_instance.web-server-instance`
+`terraform destroy -target aws_instance.web-server-instance`
+# list states of all the resources
+$ terraform state list
 ```
 aws_eip.one
 aws_instance.web-server-instance
@@ -22,8 +26,8 @@ aws_security_group.allow_web
 aws_subnet.subnet-1
 aws_vpc.prod-vpc
 ```
-
-# $ terraform state show aws_instance.web-server-instance
+# Show states of a certain resource
+$ terraform state show aws_instance.web-server-instance
 ```
 # aws_instance.web-server-instance:
 resource "aws_instance" "web-server-instance" {
@@ -131,9 +135,10 @@ server_info = [
   "subnet-0a3b8c48f70b1eb2c",
 ]
 server_public_ip = "3.141.188.212"
-
+```
 # or pass the variable through command line:
 $ terraform apply -var "available_zone=us-east-2a" --auto-approve
+```
 aws_vpc.prod-vpc: Creating...
 aws_vpc.prod-vpc: Creation complete after 2s [id=vpc-0e661cf851805f26b]
 aws_internet_gateway.gw: Creating...
