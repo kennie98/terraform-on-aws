@@ -1,5 +1,4 @@
-# use your own credentials
 aws_credentials = {
-  access_key = "FAKEIEW2POZH6MOODBDA"
-  secret_key = "fake8SzcTPfm01zpbIuXA9yBx4ZN5gZQWnyrrFxl"
+  access_key = "AKIAJ72TP7HQJSA3DQ5A"
+  secret_key = "cfjstFGkhZLvk7XIeg7yUhWZ1fYoeRE1xXQ1rEha"
 }
