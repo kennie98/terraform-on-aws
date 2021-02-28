@@ -1,19 +1,19 @@
-# Initialization (Installation of provider libraries):
+### Initialization (Installation of provider libraries):
 `terraform init`
-# Check results of script before applying changes
+### Check results of script before applying changes
 `terraform plan`
-# Apply Changes
+### Apply Changes
 `terraform apply`
-# Destroy all the infrastructure created by terraform scripts
+### Destroy all the infrastructure created by terraform scripts
 `terraform destroy`
-# shows the states/outputs without really applying changes
+### shows the states/outputs without really applying changes
 `terraform refresh`
-# automatically apply without confirmation
+### automatically apply without confirmation
 `terraform apply --auto-approve`
-# delete/apply only one resource
+### delete/apply only one resource
 `terraform apply -target aws_instance.web-server-instance`
 `terraform destroy -target aws_instance.web-server-instance`
-# list states of all the resources
+### list states of all the resources
 $ terraform state list
 ```
 aws_eip.one
@@ -26,7 +26,7 @@ aws_security_group.allow_web
 aws_subnet.subnet-1
 aws_vpc.prod-vpc
 ```
-# Show states of a certain resource
+### Show states of a certain resource
 $ terraform state show aws_instance.web-server-instance
 ```
 # aws_instance.web-server-instance:
@@ -99,7 +99,7 @@ resource "aws_instance" "web-server-instance" {
 }
 ```
 
-# `terraform output` printout all the outputs
+### `terraform output` printout all the outputs
 ```
 $ terraform output
 server_info = [
@@ -108,7 +108,7 @@ server_info = [
 ]
 server_public_ip = "3.141.188.212"
 ```
-# using a variable without default value will trigger prompt to input:
+### using a variable without default value will trigger prompt to input:
 $ terraform apply --auto-approve
 ```
 var.available_zone
@@ -136,7 +136,7 @@ server_info = [
 ]
 server_public_ip = "3.141.188.212"
 ```
-# or pass the variable through command line:
+### or pass the variable through command line:
 $ terraform apply -var "available_zone=us-east-2a" --auto-approve
 ```
 aws_vpc.prod-vpc: Creating...
@@ -173,9 +173,9 @@ server_info = [
 ]
 server_public_ip = "3.140.163.30"
 ```
-# another option is to define the variable in `terraform.tfvars` which is the default place for variable configuration.
+### another option is to define the variable in `terraform.tfvars` which is the default place for variable configuration.
 
-# passing variable definition file
+### passing variable definition file
 $ terraform destroy -var-file credential.tfvars
 ```
 An execution plan has been generated and is shown below.
